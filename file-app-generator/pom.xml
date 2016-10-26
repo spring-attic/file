@@ -24,6 +24,15 @@
                 <groupId>org.springframework.cloud.stream.app.plugin</groupId>
                 <artifactId>spring-cloud-stream-app-maven-plugin</artifactId>
                 <version>${scs-app-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>app-gen</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>generate-app</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <javaVersion>1.7</javaVersion>
                     <bootVersion>${bootVersion}</bootVersion>
