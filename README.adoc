@@ -1,1 +1,9 @@
-# file
+# File Source and Sink
+
+To learn more about this application and the supported properties, please review the following link.
+
+## File Source
+include::spring-cloud-starter-stream-source-file/README.adoc[]
+
+## File Sink
+include::spring-cloud-starter-stream-sink-file/README.adoc[]
