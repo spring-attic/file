@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,12 @@
 
 package org.springframework.cloud.stream.app.file.source;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,8 +34,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.integration.file.splitter.FileSplitter;
@@ -37,20 +42,15 @@ import org.springframework.integration.json.JsonPathUtils;
 import org.springframework.integration.support.json.JsonObjectMapperProvider;
 import org.springframework.messaging.Message;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author Gary Russell
  * @author Artem Bilan
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = FileSourceTests.FileSourceApplication.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext
 public abstract class FileSourceTests {
 
@@ -79,8 +79,10 @@ public abstract class FileSourceTests {
 		return fileFinal;
 	}
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS" })
 	public static class ContentPayloadTests extends FileSourceTests {
 
 		@Test
@@ -96,8 +98,13 @@ public abstract class FileSourceTests {
 
 	}
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS", "file.consumer.mode = ref"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = ref",
+//			"spring.cloud.stream.bindings.output.contentType=text/plain"  GH-2
+	})
 	public static class FilePayloadTests extends FileSourceTests {
 
 		@Test
@@ -111,8 +118,11 @@ public abstract class FileSourceTests {
 
 	}
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS", "file.consumer.mode = lines"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = lines" })
 	public static class LinesPayloadTests extends FileSourceTests {
 
 		@Test
@@ -131,9 +141,13 @@ public abstract class FileSourceTests {
 
 	}
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS", "file.consumer.mode = lines",
-			"file.consumer.withMarkers = true", "file.consumer.markersJson = false"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = lines",
+			"file.consumer.withMarkers = true",
+			"file.consumer.markersJson = false" })
 	public static class LinesAndMarkersPayloadTests extends FileSourceTests {
 
 		@Test
@@ -160,9 +174,12 @@ public abstract class FileSourceTests {
 
 	}
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS", "file.consumer.mode = lines",
-			"file.consumer.withMarkers = true"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = lines",
+			"file.consumer.withMarkers = true" })
 	public static class LinesAndMarkersAsJsonPayloadTests extends FileSourceTests {
 
 		@Test
@@ -197,9 +214,12 @@ public abstract class FileSourceTests {
 	}
 
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS", "file.consumer.mode = ref",
-			"file.filenamePattern = *.txt"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = ref",
+			"file.filenamePattern = *.txt" })
 	public static class FilePayloadWithPatternTests extends FileSourceTests {
 
 		@Test
@@ -218,9 +238,12 @@ public abstract class FileSourceTests {
 
 	}
 
-	@IntegrationTest({"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
-			"trigger.fixedDelay = 100", "trigger.timeUnit = MILLISECONDS", "file.consumer.mode = ref",
-			"file.filenameRegex = .*.txt"})
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = ref",
+			"file.filenameRegex = .*.txt" })
 	public static class FilePayloadWithRegexTests extends FileSourceTests {
 
 		@Test
