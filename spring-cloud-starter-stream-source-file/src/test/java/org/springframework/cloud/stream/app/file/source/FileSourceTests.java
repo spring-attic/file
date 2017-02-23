@@ -103,8 +103,7 @@ public abstract class FileSourceTests {
 			"trigger.fixedDelay = 100",
 			"trigger.timeUnit = MILLISECONDS",
 			"file.consumer.mode = ref",
-//			"spring.cloud.stream.bindings.output.contentType=text/plain"  GH-2
-	})
+			"spring.cloud.stream.bindings.output.contentType=text/plain" })
 	public static class FilePayloadTests extends FileSourceTests {
 
 		@Test
@@ -112,7 +111,7 @@ public abstract class FileSourceTests {
 			File file = atomicFileCreate("test.txt");
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
-			assertEquals(file, received.getPayload());
+			assertEquals(file.getAbsolutePath(), received.getPayload());
 			file.delete();
 		}
 
