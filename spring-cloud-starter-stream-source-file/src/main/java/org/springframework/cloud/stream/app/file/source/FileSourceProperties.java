@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.app.file.source;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.AssertTrue;
 import java.io.File;
@@ -28,6 +29,7 @@ import java.util.regex.Pattern;
  * @author Gary Russell
  */
 @ConfigurationProperties("file")
+@Validated
 public class FileSourceProperties {
 
 	private static final String DEFAULT_DIR = System.getProperty("java.io.tmpdir") +

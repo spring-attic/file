@@ -20,6 +20,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.AssertTrue;
 import java.io.File;
@@ -30,6 +31,7 @@ import java.io.File;
  * @author Mark Fisher
  */
 @ConfigurationProperties("file")
+@Validated
 public class FileSinkProperties {
 
 	private static final String DEFAULT_DIR = System.getProperty("java.io.tmpdir") +
