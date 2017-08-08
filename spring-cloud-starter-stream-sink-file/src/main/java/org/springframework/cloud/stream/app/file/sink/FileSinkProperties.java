@@ -16,19 +16,21 @@
 
 package org.springframework.cloud.stream.app.file.sink;
 
+import java.io.File;
+
+import javax.validation.constraints.AssertTrue;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.AssertTrue;
-import java.io.File;
-
 /**
  * Properties for the file sink.
  *
  * @author Mark Fisher
+ * @author Gary Russell
  */
 @ConfigurationProperties("file")
 @Validated
@@ -40,7 +42,7 @@ public class FileSinkProperties {
 	private static final String DEFAULT_NAME = "file-sink";
 
 	/**
-	 * A flag to indicate whether content should be written as bytes.
+	 * A flag to indicate whether adding a newline after the write should be suppressed.
 	 */
 	private boolean binary = false;
 

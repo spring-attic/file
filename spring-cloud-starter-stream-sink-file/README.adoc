@@ -3,6 +3,23 @@
 
 This module writes each message it receives to a file.
 
+== Input
+
+=== Headers
+
+N/A
+
+=== Payload
+
+* `java.io.File`
+* `java.io.InputStream`
+* `byte[]`
+* `String`
+
+== Output
+
+N/A (writes to the file system).
+
 == Options
 
 The **$$file$$** $$sink$$ has the following options:
@@ -23,5 +40,16 @@ $$file.suffix$$:: $$The suffix to append to file name.$$ *($$String$$, default: 
 == Build
 
 ```
-$ mvn clean package
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+
+You can find the corresponding binder based projects here. You can then cd into one one of the folders and build it:
+
+$ ./mvnw clean package
+```
+
+=== Examples
+
+```
+java -jar file_sink.jar --file.directory=/tmp/bar
 ```
