@@ -13,6 +13,54 @@ When using `--mode=lines`, you can also provide the additional option `--withMar
 If set to `true`, the underlying `FileSplitter` will emit additional _start-of-file_ and _end-of-file_ marker messages before and after the actual data.
 The payload of these 2 additional marker messages is of type `FileSplitter.FileMarker`. The option `withMarkers` defaults to `false` if not explicitly set.
 
+== Input
+
+N/A (Reads from a file system directory).
+
+== Output
+
+=== mode = contents
+
+==== Headers:
+
+* `Content-Type: application/octet-stream`
+* `file_orginalFile: <java.io.File>`
+* `file_name: <file name>`
+
+==== Payload:
+
+A `byte[]` filled with the file contents.
+
+=== mode = lines
+
+==== Headers:
+
+* `Content-Type: text/plain`
+* `file_orginalFile: <java.io.File>`
+* `file_name: <file name>`
+* `correlationId: <UUID>` (same for each line)
+* `sequenceNumber: <n>`
+* `sequenceSize: 0` (number of lines is not know until the file is read)
+
+==== Payload:
+
+A `String` for each line.
+
+The first line is optionally preceded by a message with a `START` marker payload.
+The last line is optionally followed by a message with an `END` marker payload.
+
+Marker presence and format are determined by the `with-markers` and `markers-json` properties.
+
+=== mode = ref
+
+==== Headers:
+
+None.
+
+==== Payload:
+
+A `java.io.File` object.
+
 == Options
 
 The **$$file$$** $$source$$ has the following options:
@@ -48,3 +96,8 @@ The `ref` option is useful in some cases in which the file contents are large an
 $ mvn clean package
 ```
 
+== Examples
+
+```
+java -jar file_source.jar --file.directory=/tmp/foo --file.mode=lines --trigger.fixed-delay=60
+```
