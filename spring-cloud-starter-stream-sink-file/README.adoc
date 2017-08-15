@@ -53,3 +53,9 @@ $ ./mvnw clean package
 ```
 java -jar file_sink.jar --file.directory=/tmp/bar
 ```
+
+=== Examples
+
+```
+java -jar file_sink.jar --file.directory=/tmp/bar
+```
