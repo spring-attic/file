@@ -104,5 +104,5 @@ $ ./mvnw clean package
 == Examples
 
 ```
-java -jar file_source.jar --file.directory=/tmp/foo --file.mode=lines --trigger.fixed-delay=60
+java -jar file_source.jar --file.directory=/tmp/foo --file.consumer.mode=lines --trigger.fixed-delay=60
 ```
