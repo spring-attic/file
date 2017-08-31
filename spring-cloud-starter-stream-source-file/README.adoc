@@ -88,8 +88,6 @@ $$trigger.time-unit$$:: $$The TimeUnit to apply to delay values.$$ *($$TimeUnit$
 
 The `ref` option is useful in some cases in which the file contents are large and it would be more efficient to send the file path.
 
-//end::ref-doc[]
-
 == Build
 
 ```
@@ -106,3 +104,5 @@ $ ./mvnw clean package
 ```
 java -jar file_source.jar --file.directory=/tmp/foo --file.consumer.mode=lines --trigger.fixed-delay=60
 ```
+
+//end::ref-doc[]
