@@ -35,8 +35,6 @@ $$file.name-expression$$:: $$The expression to evaluate for the name of the targ
 $$file.suffix$$:: $$The suffix to append to file name.$$ *($$String$$, default: `$$<empty string>$$`)*
 //end::configuration-properties[]
 
-//end::ref-doc[]
-
 == Build
 
 ```
@@ -53,3 +51,5 @@ $ ./mvnw clean package
 ```
 java -jar file_sink.jar --file.directory=/tmp/bar
 ```
+
+//end::ref-doc[]
