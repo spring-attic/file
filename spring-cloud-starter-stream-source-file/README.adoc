@@ -94,7 +94,7 @@ The `ref` option is useful in some cases in which the file contents are large an
 $ ./mvnw clean install -PgenerateApps
 $ cd apps
 
-You can find the corresponding binder based projects here. You can then cd into one one of the folders and build it:
+You can find the corresponding binder based projects here. You can then cd into one of the folders and build it:
 
 $ ./mvnw clean package
 ```
