@@ -41,7 +41,7 @@ $$file.suffix$$:: $$The suffix to append to file name.$$ *($$String$$, default: 
 $ ./mvnw clean install -PgenerateApps
 $ cd apps
 
-You can find the corresponding binder based projects here. You can then cd into one one of the folders and build it:
+You can find the corresponding binder based projects here. You can then cd into one of the folders and build it:
 
 $ ./mvnw clean package
 ```
