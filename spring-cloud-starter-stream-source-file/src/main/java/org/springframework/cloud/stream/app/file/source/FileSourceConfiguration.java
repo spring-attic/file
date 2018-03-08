@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2017 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.file.FileInboundChannelAdapterSpec;
-import org.springframework.integration.dsl.file.Files;
 import org.springframework.integration.file.FileReadingMessageSource;
+import org.springframework.integration.file.dsl.FileInboundChannelAdapterSpec;
+import org.springframework.integration.file.dsl.Files;
 import org.springframework.util.StringUtils;
 
 /**
@@ -45,8 +45,8 @@ import org.springframework.util.StringUtils;
  */
 @EnableBinding(Source.class)
 @Import(TriggerConfiguration.class)
-@EnableConfigurationProperties({FileSourceProperties.class, FileConsumerProperties.class,
-		TriggerPropertiesMaxMessagesDefaultUnlimited.class})
+@EnableConfigurationProperties({ FileSourceProperties.class, FileConsumerProperties.class,
+		TriggerPropertiesMaxMessagesDefaultUnlimited.class })
 public class FileSourceConfiguration {
 
 	@Autowired
@@ -64,7 +64,8 @@ public class FileSourceConfiguration {
 
 		if (StringUtils.hasText(this.properties.getFilenamePattern())) {
 			messageSourceSpec.patternFilter(this.properties.getFilenamePattern());
-		} else if (this.properties.getFilenameRegex() != null) {
+		}
+		else if (this.properties.getFilenameRegex() != null) {
 			messageSourceSpec.regexFilter(this.properties.getFilenameRegex().pattern());
 		}
 

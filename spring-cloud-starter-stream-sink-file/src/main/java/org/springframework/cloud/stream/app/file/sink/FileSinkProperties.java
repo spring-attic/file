@@ -37,7 +37,7 @@ import org.springframework.validation.annotation.Validated;
 public class FileSinkProperties {
 
 	private static final String DEFAULT_DIR = System.getProperty("java.io.tmpdir") +
-			File.separator + "dataflow" + File.separator + "output";
+			File.separator + "file-sink" + File.separator + "output";
 
 	private static final String DEFAULT_NAME = "file-sink";
 
@@ -160,4 +160,5 @@ public class FileSinkProperties {
 	public boolean isMutuallyExclusiveDirectoryAndDirectoryExpression() {
 		return DEFAULT_DIR.equals(directory) || directoryExpression == null;
 	}
+
 }

@@ -16,12 +16,13 @@
 
 package org.springframework.cloud.stream.app.file.source;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.AssertTrue;
 import java.io.File;
 import java.util.regex.Pattern;
+
+import javax.validation.constraints.AssertTrue;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Properties for the file source.
@@ -33,7 +34,7 @@ import java.util.regex.Pattern;
 public class FileSourceProperties {
 
 	private static final String DEFAULT_DIR = System.getProperty("java.io.tmpdir") +
-			File.separator + "dataflow" + File.separator + "input";
+			File.separator + "file-source" + File.separator + "input";
 
 	/**
 	 * The directory to poll for new files.

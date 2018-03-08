@@ -24,7 +24,7 @@ N/A (Reads from a file system directory).
 ==== Headers:
 
 * `Content-Type: application/octet-stream`
-* `file_orginalFile: <java.io.File>`
+* `file_originalFile: <java.io.File>`
 * `file_name: <file name>`
 
 ==== Payload:
@@ -36,7 +36,7 @@ A `byte[]` filled with the file contents.
 ==== Headers:
 
 * `Content-Type: text/plain`
-* `file_orginalFile: <java.io.File>`
+* `file_originalFile: <java.io.File>`
 * `file_name: <file name>`
 * `correlationId: <UUID>` (same for each line)
 * `sequenceNumber: <n>`

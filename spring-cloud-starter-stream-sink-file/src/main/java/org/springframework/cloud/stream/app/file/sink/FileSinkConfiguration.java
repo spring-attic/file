@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,9 @@ public class FileSinkConfiguration {
 
 	@Bean
 	@ServiceActivator(inputChannel = Sink.INPUT)
-	public FileWritingMessageHandler fileWritingMessageHandler(FileNameGenerator fileNameGenerator, FileSinkProperties properties) {
+	public FileWritingMessageHandler fileWritingMessageHandler(FileNameGenerator fileNameGenerator,
+			FileSinkProperties properties) {
+
 		FileWritingMessageHandler handler = (properties.getDirectoryExpression() != null)
 				? new FileWritingMessageHandler(properties.getDirectoryExpression())
 				: new FileWritingMessageHandler(new File(properties.getDirectory()));
@@ -58,4 +60,5 @@ public class FileSinkConfiguration {
 		fileNameGenerator.setExpression(properties.getNameExpression());
 		return fileNameGenerator;
 	}
+
 }
