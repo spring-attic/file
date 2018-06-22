@@ -43,9 +43,11 @@ import org.springframework.integration.json.JsonPathUtils;
 import org.springframework.integration.support.json.JsonObjectMapperProvider;
 import org.springframework.integration.test.matcher.HeaderMatcher;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.MimeTypeUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -121,6 +123,25 @@ public abstract class FileSourceTests {
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertEquals(file.getAbsolutePath(), received.getPayload());
+			file.delete();
+		}
+
+	}
+
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = ref"})
+	public static class FilePayloadRefModeDefaultContentTypeTests extends FileSourceTests {
+
+		@Test
+		public void testSimpleFile() throws Exception {
+			File file = atomicFileCreate("test.txt");
+			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
+			assertNotNull(received);
+			assertEquals(String.format("\"%s\"", file.getAbsolutePath()), received.getPayload());
+			assertEquals(MimeTypeUtils.APPLICATION_JSON, received.getHeaders().get(MessageHeaders.CONTENT_TYPE));
 			file.delete();
 		}
 
