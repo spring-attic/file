@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.app.file.FileConsumerProperties;
+import org.springframework.cloud.stream.app.file.FileReadingMode;
 import org.springframework.cloud.stream.app.file.FileUtils;
 import org.springframework.cloud.stream.app.trigger.TriggerConfiguration;
 import org.springframework.cloud.stream.app.trigger.TriggerPropertiesMaxMessagesDefaultUnlimited;
@@ -73,9 +74,11 @@ public class FileSourceConfiguration {
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceSpec);
 
-		return FileUtils.enhanceFlowForReadingMode(flowBuilder, this.fileConsumerProperties)
-				.channel(source.output())
-				.get();
+		if (this.fileConsumerProperties.getMode() != FileReadingMode.ref) {
+			flowBuilder = FileUtils.enhanceFlowForReadingMode(flowBuilder, this.fileConsumerProperties);
+		}
+
+		return flowBuilder.channel(source.output()).get();
 	}
 
 }
