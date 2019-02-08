@@ -115,18 +115,38 @@ public abstract class FileSourceTests {
 			"trigger.timeUnit = MILLISECONDS",
 			"file.consumer.mode = ref",
 			"spring.cloud.stream.bindings.output.contentType=text/plain" })
-	public static class FilePayloadTests extends FileSourceTests {
+	public static class FilePayloadRefModeTextPlainContentTypeTests extends FileSourceTests {
 
 		@Test
 		public void testSimpleFile() throws Exception {
 			File file = atomicFileCreate("test.txt");
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
+			// since we've explicitly asked for text/plain (above property ...output.contentType), payload should
+			// come back as is, no need to read it as a File
 			assertEquals(file.getAbsolutePath(), received.getPayload());
 			file.delete();
 		}
-
 	}
+
+	@TestPropertySource(properties = {
+			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
+			"trigger.fixedDelay = 100",
+			"trigger.timeUnit = MILLISECONDS",
+			"file.consumer.mode = ref",
+			"spring.cloud.stream.bindings.output.contentType=application/json" })
+	public static class FilePayloadRefModeApplicationJsonContentTypeTests extends FileSourceTests {
+
+		@Test
+		public void testSimpleFile() throws Exception {
+			File file = atomicFileCreate("test.txt");
+			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
+			assertNotNull(received);
+			assertEquals(file.getAbsolutePath(), objectMapper.readValue((String) received.getPayload(), File.class).getAbsolutePath());
+			file.delete();
+		}
+	}
+
 
 	@TestPropertySource(properties = {
 			"file.directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
@@ -140,7 +160,7 @@ public abstract class FileSourceTests {
 			File file = atomicFileCreate("test.txt");
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
-			assertEquals(String.format("\"%s\"", file.getAbsolutePath()), received.getPayload());
+			assertEquals(file.getAbsolutePath(), objectMapper.readValue((String) received.getPayload(), File.class).getAbsolutePath());
 			assertEquals(MimeTypeUtils.APPLICATION_JSON, received.getHeaders().get(MessageHeaders.CONTENT_TYPE));
 			file.delete();
 		}
@@ -224,7 +244,7 @@ public abstract class FileSourceTests {
 			assertTrue(new File(ROOT_DIR, "test.foo").exists());
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
-			assertEquals(file, new File(received.getPayload().toString().replaceAll("\"", "")));
+			assertEquals(file, objectMapper.readValue((String) received.getPayload(), File.class));
 			received = messageCollector.forChannel(source.output()).poll(300, TimeUnit.MILLISECONDS);
 			assertNull(received);
 			file.delete();
@@ -248,7 +268,7 @@ public abstract class FileSourceTests {
 			assertTrue(new File(ROOT_DIR, "test.foo").exists());
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
-			assertEquals(file, new File(received.getPayload().toString().replaceAll("\"", "")));
+			assertEquals(file, objectMapper.readValue((String) received.getPayload(), File.class));
 			received = messageCollector.forChannel(source.output()).poll(300, TimeUnit.MILLISECONDS);
 			assertNull(received);
 			file.delete();
