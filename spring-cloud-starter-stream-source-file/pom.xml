@@ -53,6 +53,12 @@
 					<generatedApps>
 						<file-source/>
 					</generatedApps>
+					<enableContainerImageMetadata>true</enableContainerImageMetadata>
+					<metadataSourceTypeFilters>
+						<filter>org.springframework.cloud.stream.app.file.source.FileSourceProperties</filter>
+						<filter>org.springframework.cloud.stream.app.file.FileConsumerProperties</filter>
+						<filter>org.springframework.cloud.stream.app.trigger.TriggerPropertiesMaxMessagesDefaultUnlimited</filter>
+					</metadataSourceTypeFilters>
 				</configuration>
 			</plugin>
 		</plugins>
